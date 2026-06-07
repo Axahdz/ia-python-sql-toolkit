@@ -1,0 +1,1398 @@
+
+\documentclass[12pt]{article}
+
+% =========================
+% PAQUETES BÁSICOS
+% =========================
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+
+\geometry{margin=2.2cm}
+
+% =========================
+% CONFIGURACIÓN DE CÓDIGO
+% =========================
+\definecolor{codegray}{gray}{0.95}
+\definecolor{commentgreen}{rgb}{0,0.45,0}
+\definecolor{keywordblue}{rgb}{0.1,0.1,0.65}
+
+\lstset{
+    backgroundcolor=\color{codegray},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    keywordstyle=\color{keywordblue}\bfseries,
+    commentstyle=\color{commentgreen},
+    stringstyle=\color{red!60!black},
+    showstringspaces=false
+}
+
+\title{\textbf{Plantillas Técnicas}\\
+\large APIs, Python, SQL, Automatización, IA, Docker y Casos Prácticos}
+\author{Javier Axayácatl Melchor Hernández}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ==========================================================
+\section{Objetivo del documento}
+% ==========================================================
+
+Este documento contiene plantillas rápidas para consultar durante una práctica técnica o entrevista. 
+El objetivo no es memorizar todo, sino tener ejemplos organizados para resolver tareas comunes relacionadas con:
+
+\begin{itemize}
+    \item Python básico.
+    \item Consumo de APIs.
+    \item Manejo de JSON.
+    \item SQL Server básico.
+    \item Conexión de Python con SQL Server.
+    \item Automatización con IA.
+    \item Docker básico.
+    \item MongoDB / NoSQL básico.
+    \item Casos prácticos de IA empresarial.
+\end{itemize}
+
+\section{Estructura recomendada para GitHub}
+
+Si se sube este material a GitHub, se recomienda usar una estructura simple:
+
+\begin{lstlisting}
+ai-interview-toolkit/
+|
+|-- README.md
+|-- docs/
+|   |-- guia_plantillas.pdf
+|   |-- guia_plantillas.tex
+|
+|-- python/
+|   |-- 01_basico.py
+|   |-- 02_api_get.py
+|   |-- 03_api_post.py
+|   |-- 04_json.py
+|
+|-- sql/
+|   |-- 01_crear_base.sql
+|   |-- 02_crud.sql
+|   |-- 03_joins.sql
+|
+|-- python_sql/
+|   |-- conexion_sql.py
+|
+|-- docker/
+|   |-- Dockerfile
+|   |-- comandos_basicos.md
+|
+|-- ia/
+|   |-- prompts.md
+|   |-- casos_uso.md
+\end{lstlisting}
+
+\section{README sugerido para GitHub}
+
+\begin{lstlisting}
+# AI Interview Toolkit
+
+Repositorio personal de práctica para entrevista técnica de Especialista en IA.
+
+Incluye ejemplos básicos de:
+
+- Python
+- Consumo de APIs
+- JSON
+- SQL Server
+- Conexión Python con SQL Server
+- Docker básico
+- Automatización con IA
+- Casos prácticos empresariales
+
+Este repositorio funciona como material de estudio y referencia rápida.
+\end{lstlisting}
+
+% ==========================================================
+\section{Python básico}
+% ==========================================================
+
+\subsection{Estructura mínima de un script}
+
+\begin{lstlisting}[language=Python]
+# Archivo: 01_basico.py
+
+def main():
+    print("Hola, este es mi primer script en Python")
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\textbf{Idea clave:} la función \texttt{main()} permite organizar el programa. 
+La línea \texttt{if \_\_name\_\_ == "\_\_main\_\_":} indica que el programa inicia desde ahí.
+
+\subsection{Variables}
+
+\begin{lstlisting}[language=Python]
+nombre = "Javier"
+edad = 29
+activo = True
+
+print(nombre)
+print(edad)
+print(activo)
+\end{lstlisting}
+
+\subsection{Condicional if}
+
+\begin{lstlisting}[language=Python]
+edad = 29
+
+if edad >= 18:
+    print("Es mayor de edad")
+else:
+    print("Es menor de edad")
+\end{lstlisting}
+
+\subsection{Ciclo for}
+
+\begin{lstlisting}[language=Python]
+for i in range(5):
+    print("Número:", i)
+\end{lstlisting}
+
+\subsection{Funciones}
+
+\begin{lstlisting}[language=Python]
+def sumar(a, b):
+    resultado = a + b
+    return resultado
+
+print(sumar(5, 3))
+\end{lstlisting}
+
+\subsection{Listas}
+
+\begin{lstlisting}[language=Python]
+usuarios = ["Adriel", "Juan", "Ana"]
+
+for usuario in usuarios:
+    print(usuario)
+\end{lstlisting}
+
+\subsection{Diccionarios}
+
+\begin{lstlisting}[language=Python]
+usuario = {
+    "nombre": "Adriel",
+    "correo": "adriel@gmail.com"
+}
+
+print(usuario["nombre"])
+print(usuario["correo"])
+\end{lstlisting}
+
+\subsection{Lista de diccionarios}
+
+\begin{lstlisting}[language=Python]
+usuarios = [
+    {"nombre": "Adriel", "correo": "adriel@gmail.com"},
+    {"nombre": "Juan", "correo": "juan@gmail.com"}
+]
+
+for usuario in usuarios:
+    print(usuario["nombre"], usuario["correo"])
+\end{lstlisting}
+
+% ==========================================================
+\section{Consumo de APIs con Python}
+% ==========================================================
+
+\subsection{Instalar requests}
+
+\begin{lstlisting}
+pip install requests
+\end{lstlisting}
+
+\subsection{GET básico}
+
+\begin{lstlisting}[language=Python]
+# Archivo: 02_api_get.py
+
+import requests 
+
+url = "https://jsonplaceholder.typicode.com/users"
+
+respuesta = requests.get(url)
+
+print("código de estado: ", respuesta.status_code)
+print()
+
+usuarios = respuesta.json()
+
+for usuario in usuarios:
+    print("Nombre", usuario["name"])
+
+print("-------")
+\end{lstlisting}
+
+\subsection{Explicación del GET}
+
+\begin{itemize}
+    \item \texttt{requests.get(url)} envía una petición GET.
+    \item \texttt{status\_code} indica si la petición fue exitosa.
+    \item \texttt{respuesta.json()} convierte la respuesta JSON a objetos de Python.
+    \item El ciclo \texttt{for} recorre cada usuario.
+\end{itemize}
+
+\subsection{POST básico}
+
+\begin{lstlisting}[language=Python]
+# Archivo: 03_api_post.py
+
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+datos = {
+    "title": "Reporte de prueba",
+    "body": "Este es un contenido enviado desde Python",
+    "userId": 1
+}
+
+respuesta = requests.post(url, json=datos)
+
+print("Código de estado:", respuesta.status_code)
+print(respuesta.json())
+\end{lstlisting}
+
+\subsection{GET con headers}
+
+\begin{lstlisting}[language=Python]
+import requests
+
+url = "https://api.ejemplo.com/datos"
+
+headers = {
+    "Authorization": "Bearer TU_API_KEY",
+    "Content-Type": "application/json"
+}
+
+respuesta = requests.get(url, headers=headers)
+
+print(respuesta.status_code)
+print(respuesta.json())
+\end{lstlisting}
+
+\subsection{POST con API Key}
+
+\begin{lstlisting}[language=Python]
+import requests
+
+url = "https://api.ejemplo.com/procesar"
+
+headers = {
+    "Authorization": "Bearer TU_API_KEY",
+    "Content-Type": "application/json"
+}
+
+datos = {
+    "mensaje": "Analiza este texto"
+}
+
+respuesta = requests.post(url, headers=headers, json=datos)
+
+print(respuesta.status_code)
+print(respuesta.json())
+\end{lstlisting}
+
+\subsection{Plantilla general para consumir una API}
+
+\begin{lstlisting}[language=Python]
+import requests
+
+url = "URL_DEL_ENDPOINT"
+
+headers = {
+    "Authorization": "Bearer API_KEY",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "campo": "valor"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+
+if response.status_code == 200:
+    data = response.json()
+    print(data)
+else:
+    print("Error:", response.status_code)
+    print(response.text)
+\end{lstlisting}
+
+% ==========================================================
+\section{JSON}
+% ==========================================================
+
+\subsection{Ejemplo de JSON}
+
+\begin{lstlisting}
+{
+    "nombre": "Adriel",
+    "correo": "adriel@gmail.com",
+    "activo": true
+}
+\end{lstlisting}
+
+\subsection{JSON como diccionario en Python}
+
+\begin{lstlisting}[language=Python]
+usuario = {
+    "nombre": "Adriel",
+    "correo": "adriel@gmail.com",
+    "activo": True
+}
+
+print(usuario["nombre"])
+\end{lstlisting}
+
+\subsection{Convertir diccionario a JSON}
+
+\begin{lstlisting}[language=Python]
+import json
+
+usuario = {
+    "nombre": "Adriel",
+    "correo": "adriel@gmail.com"
+}
+
+usuario_json = json.dumps(usuario, indent=4)
+
+print(usuario_json)
+\end{lstlisting}
+
+\subsection{Convertir JSON a diccionario}
+
+\begin{lstlisting}[language=Python]
+import json
+
+texto_json = '{"nombre": "Adriel", "correo": "adriel@gmail.com"}'
+
+usuario = json.loads(texto_json)
+
+print(usuario["nombre"])
+\end{lstlisting}
+
+% ==========================================================
+\section{SQL Server básico}
+% ==========================================================
+
+\subsection{Crear base de datos}
+
+\begin{lstlisting}[language=SQL]
+CREATE DATABASE mitablaAPI;
+\end{lstlisting}
+
+\subsection{Usar base de datos}
+
+\begin{lstlisting}[language=SQL]
+USE mitablaAPI;
+\end{lstlisting}
+
+\subsection{Crear tabla}
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Usuario(
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100),
+    correo VARCHAR(100)
+);
+\end{lstlisting}
+
+\subsection{Insertar datos}
+
+\begin{lstlisting}[language=SQL]
+INSERT INTO Usuario(nombre, correo)
+VALUES
+('Adriel', 'adriel@gmail.com'),
+('Juan', 'juan@gmail.com');
+\end{lstlisting}
+
+\subsection{Consultar datos}
+
+\begin{lstlisting}[language=SQL]
+SELECT * FROM Usuario;
+\end{lstlisting}
+
+\subsection{Consultar columnas específicas}
+
+\begin{lstlisting}[language=SQL]
+SELECT id, nombre, correo
+FROM Usuario;
+\end{lstlisting}
+
+\subsection{Consultar con WHERE}
+
+\begin{lstlisting}[language=SQL]
+SELECT * FROM Usuario
+WHERE nombre = 'Adriel';
+\end{lstlisting}
+
+\subsection{Actualizar datos}
+
+\begin{lstlisting}[language=SQL]
+UPDATE Usuario
+SET correo = 'nuevo_correo@gmail.com'
+WHERE id = 1;
+\end{lstlisting}
+
+\subsection{Eliminar datos}
+
+\begin{lstlisting}[language=SQL]
+DELETE FROM Usuario
+WHERE id = 2;
+\end{lstlisting}
+
+\subsection{CRUD completo}
+
+CRUD significa:
+
+\begin{itemize}
+    \item Create: crear o insertar datos.
+    \item Read: leer o consultar datos.
+    \item Update: actualizar datos.
+    \item Delete: eliminar datos.
+\end{itemize}
+
+\begin{lstlisting}[language=SQL]
+-- CREATE
+INSERT INTO Usuario(nombre, correo)
+VALUES ('Pedro', 'pedro@gmail.com');
+
+-- READ
+SELECT * FROM Usuario;
+
+-- UPDATE
+UPDATE Usuario
+SET nombre = 'Pedro López'
+WHERE id = 3;
+
+-- DELETE
+DELETE FROM Usuario
+WHERE id = 3;
+\end{lstlisting}
+
+% ==========================================================
+\section{Relaciones y JOIN en SQL}
+% ==========================================================
+
+\subsection{Crear tabla relacionada}
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Ticket(
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    usuario_id INT,
+    descripcion VARCHAR(255),
+    estado VARCHAR(50),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
+);
+\end{lstlisting}
+
+\subsection{Insertar tickets}
+
+\begin{lstlisting}[language=SQL]
+INSERT INTO Ticket(usuario_id, descripcion, estado)
+VALUES
+(1, 'No funciona el sistema', 'pendiente'),
+(1, 'Error en reporte', 'resuelto');
+\end{lstlisting}
+
+\subsection{INNER JOIN}
+
+\begin{lstlisting}[language=SQL]
+SELECT 
+    Usuario.nombre,
+    Ticket.descripcion,
+    Ticket.estado
+FROM Ticket
+INNER JOIN Usuario
+ON Ticket.usuario_id = Usuario.id;
+\end{lstlisting}
+
+\textbf{Idea clave:} \texttt{INNER JOIN} une dos tablas cuando existe coincidencia entre ambas.
+
+% ==========================================================
+\section{Conectar Python con SQL Server}
+% ==========================================================
+
+\subsection{Instalar pyodbc}
+
+\begin{lstlisting}
+pip install pyodbc
+\end{lstlisting}
+
+\subsection{Instalar el ODBC Driver}
+
+Para que Python pueda conectarse con SQL Server se necesita:
+
+\begin{center}
+\textbf{Microsoft ODBC Driver for SQL Server}
+\end{center}
+
+Se puede instalar el Driver 17 o Driver 18. Después de instalarlo, se puede verificar desde Python:
+
+\begin{lstlisting}[language=Python]
+import pyodbc
+
+print(pyodbc.drivers())
+\end{lstlisting}
+
+Si aparece una salida como:
+
+\begin{lstlisting}
+ODBC Driver 17 for SQL Server
+\end{lstlisting}
+
+o
+
+\begin{lstlisting}
+ODBC Driver 18 for SQL Server
+\end{lstlisting}
+
+entonces el driver está instalado.
+
+\subsection{Conexión básica}
+
+\begin{lstlisting}[language=Python]
+# Archivo: conexion_sql.py
+
+import pyodbc
+
+servidor = "localhost\\SQL2025"
+base_datos = "mitablaAPI"
+
+conexion = pyodbc.connect(
+    "DRIVER={ODBC DRIVER 17 for SQL SERVER};"
+    f"SERVER={servidor};"
+    f"DATABASE={base_datos};"
+    "Trusted_connection=yes;"
+)
+
+cursor = conexion.cursor()
+
+cursor.execute("SELECT id, nombre, correo FROM Usuario")
+usuarios = cursor.fetchall()
+
+for usuario in usuarios:
+    print("id", usuario.id)
+    print("nombre", usuario.nombre)
+    print("correo", usuario.correo)
+    print("-------")
+
+cursor.close()
+conexion.close()
+\end{lstlisting}
+
+\subsection{Conexión usando Driver 18}
+
+En algunos equipos el driver instalado puede ser el 18:
+
+\begin{lstlisting}[language=Python]
+conexion = pyodbc.connect(
+    "DRIVER={ODBC Driver 18 for SQL Server};"
+    f"SERVER={servidor};"
+    f"DATABASE={base_datos};"
+    "Trusted_Connection=yes;"
+    "TrustServerCertificate=yes;"
+)
+\end{lstlisting}
+
+\subsection{Insertar desde Python}
+
+\begin{lstlisting}[language=Python]
+import pyodbc
+
+servidor = "localhost\\SQL2025"
+base_datos = "mitablaAPI"
+
+conexion = pyodbc.connect(
+    "DRIVER={ODBC DRIVER 17 for SQL SERVER};"
+    f"SERVER={servidor};"
+    f"DATABASE={base_datos};"
+    "Trusted_connection=yes;"
+)
+
+cursor = conexion.cursor()
+
+nombre = "Ana"
+correo = "ana@gmail.com"
+
+cursor.execute(
+    "INSERT INTO Usuario(nombre, correo) VALUES (?, ?)",
+    nombre,
+    correo
+)
+
+conexion.commit()
+
+cursor.close()
+conexion.close()
+\end{lstlisting}
+
+\subsection{Manejo básico de errores}
+
+\begin{lstlisting}[language=Python]
+import pyodbc
+
+try:
+    conexion = pyodbc.connect(
+        "DRIVER={ODBC DRIVER 17 for SQL SERVER};"
+        "SERVER=localhost\\SQL2025;"
+        "DATABASE=mitablaAPI;"
+        "Trusted_connection=yes;"
+    )
+
+    print("Conexión exitosa")
+
+except Exception as error:
+    print("Ocurrió un error:")
+    print(error)
+\end{lstlisting}
+
+% ==========================================================
+\section{Mini API con Flask}
+% ==========================================================
+
+\subsection{Instalar Flask}
+
+\begin{lstlisting}
+pip install flask
+\end{lstlisting}
+
+\subsection{API mínima}
+
+\begin{lstlisting}[language=Python]
+# Archivo: app.py
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def inicio():
+    return "Hola, API funcionando"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+\end{lstlisting}
+
+\subsection{API que devuelve JSON}
+
+\begin{lstlisting}[language=Python]
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/usuarios")
+def obtener_usuarios():
+    usuarios = [
+        {"id": 1, "nombre": "Adriel"},
+        {"id": 2, "nombre": "Juan"}
+    ]
+
+    return jsonify(usuarios)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+\end{lstlisting}
+
+\subsection{API con POST}
+
+\begin{lstlisting}[language=Python]
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+usuarios = []
+
+@app.route("/usuarios", methods=["POST"])
+def crear_usuario():
+    datos = request.get_json()
+
+    usuarios.append(datos)
+
+    return jsonify({
+        "mensaje": "Usuario creado",
+        "usuario": datos
+    }), 201
+
+if __name__ == "__main__":
+    app.run(debug=True)
+\end{lstlisting}
+
+% ==========================================================
+\section{Plantilla de API de IA}
+% ==========================================================
+
+\subsection{Estructura general}
+
+\begin{lstlisting}[language=Python]
+import requests
+
+API_KEY = "TU_API_KEY"
+
+url = "https://api.openai.com/v1/chat/completions"
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+            "role": "system",
+            "content": "Eres un asistente que resume reportes."
+        },
+        {
+            "role": "user",
+            "content": "Resume este reporte en 5 puntos."
+        }
+    ]
+}
+
+response = requests.post(url, headers=headers, json=data)
+
+print(response.status_code)
+print(response.json())
+\end{lstlisting}
+
+\subsection{Nota importante}
+
+En una entrevista no es necesario memorizar exactamente todos los parámetros de una API comercial. 
+Lo importante es entender:
+
+\begin{itemize}
+    \item URL o endpoint.
+    \item Headers.
+    \item API Key.
+    \item Payload o cuerpo de la petición.
+    \item Respuesta JSON.
+\end{itemize}
+
+% ==========================================================
+\section{Docker básico}
+% ==========================================================
+
+\subsection{Definición corta}
+
+Docker permite empaquetar una aplicación junto con sus dependencias para ejecutarla de forma consistente en diferentes entornos.
+
+\subsection{Conceptos clave}
+
+\begin{itemize}
+    \item \textbf{Imagen:} plantilla con la aplicación y dependencias.
+    \item \textbf{Contenedor:} instancia en ejecución de una imagen.
+    \item \textbf{Dockerfile:} archivo que define cómo construir la imagen.
+\end{itemize}
+
+\subsection{Dockerfile básico para Python}
+
+\begin{lstlisting}
+FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD ["python", "app.py"]
+\end{lstlisting}
+
+\subsection{requirements.txt}
+
+\begin{lstlisting}
+flask
+requests
+pyodbc
+\end{lstlisting}
+
+\subsection{Comandos básicos}
+
+\begin{lstlisting}
+docker build -t mi-api-python .
+\end{lstlisting}
+
+\begin{lstlisting}
+docker run -p 5000:5000 mi-api-python
+\end{lstlisting}
+
+\subsection{Respuesta de entrevista}
+
+\begin{quote}
+Docker es una herramienta de contenedorización que permite empaquetar una aplicación con sus dependencias y configuración para que funcione igual en desarrollo, pruebas o producción. No lo he implementado extensamente en producción, pero conozco el concepto y puedo aprenderlo rápidamente.
+\end{quote}
+
+% ==========================================================
+\section{MongoDB y NoSQL básico}
+% ==========================================================
+
+\subsection{Diferencia entre SQL y NoSQL}
+
+\begin{longtable}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{SQL} & \textbf{NoSQL} \\
+\hline
+Usa tablas & Usa documentos o estructuras flexibles \\
+\hline
+Tiene esquemas más rígidos & Tiene esquemas más flexibles \\
+\hline
+Ejemplo: SQL Server, MySQL, PostgreSQL & Ejemplo: MongoDB \\
+\hline
+Ideal para datos relacionales & Ideal para datos semiestructurados \\
+\hline
+\end{longtable}
+
+\subsection{Documento tipo MongoDB}
+
+\begin{lstlisting}
+{
+    "_id": 1,
+    "nombre": "Adriel",
+    "correo": "adriel@gmail.com",
+    "rol": "admin"
+}
+\end{lstlisting}
+
+\subsection{Respuesta de entrevista}
+
+\begin{quote}
+No he usado MongoDB extensamente, pero entiendo que es una base de datos NoSQL orientada a documentos. A diferencia de SQL, no trabaja principalmente con tablas relacionadas, sino con documentos flexibles similares a JSON.
+\end{quote}
+
+% ==========================================================
+\section{Automatización con IA}
+% ==========================================================
+
+\subsection{N8N}
+
+N8N es una plataforma de automatización basada en nodos. Permite conectar servicios, APIs, correos, bases de datos y modelos de IA.
+
+\subsection{Make}
+
+Make es una plataforma visual de automatización. Es útil para conectar aplicaciones como formularios, correos, hojas de cálculo y servicios externos.
+
+\subsection{Power Automate}
+
+Power Automate es la plataforma de automatización de Microsoft. Conviene cuando la empresa usa Outlook, Teams, Excel, SharePoint o Microsoft 365.
+
+\subsection{Flujo típico de automatización}
+
+\begin{lstlisting}
+Correo recibido
+    ↓
+Extraer contenido
+    ↓
+Enviar a modelo de IA
+    ↓
+Clasificar prioridad
+    ↓
+Guardar en base de datos
+    ↓
+Notificar por Teams, correo o WhatsApp
+\end{lstlisting}
+
+\subsection{Caso: correos con IA}
+
+\begin{lstlisting}
+Entrada:
+- Correo de un usuario.
+- Documento adjunto.
+- Reporte o incidencia.
+
+Proceso:
+- Extraer texto.
+- Analizar con LLM.
+- Clasificar tema.
+- Asignar prioridad.
+- Enviar al área correspondiente.
+
+Salida:
+- Resumen ejecutivo.
+- Registro en base de datos.
+- Notificación automática.
+\end{lstlisting}
+
+% ==========================================================
+\section{Prompt Engineering}
+% ==========================================================
+
+\subsection{Prompt malo}
+
+\begin{lstlisting}
+Analiza este reporte.
+\end{lstlisting}
+
+\subsection{Prompt bueno}
+
+\begin{lstlisting}
+Actúa como analista de operaciones.
+
+Analiza el siguiente reporte de incidencia.
+
+Extrae:
+- Tipo de incidencia
+- Nivel de prioridad
+- Área responsable
+- Riesgo operativo
+- Resumen en máximo 5 líneas
+
+Devuelve la respuesta en formato JSON.
+\end{lstlisting}
+
+\subsection{Estructura recomendada}
+
+\begin{lstlisting}
+Rol:
+Actúa como...
+
+Objetivo:
+Tu tarea es...
+
+Contexto:
+La empresa necesita...
+
+Instrucciones:
+1. Analiza...
+2. Clasifica...
+3. Resume...
+
+Formato de salida:
+Devuelve una tabla / JSON / lista.
+
+Restricciones:
+No inventes información.
+Si falta un dato, indica "No disponible".
+\end{lstlisting}
+
+% ==========================================================
+\section{Fine Tuning}
+% ==========================================================
+
+\subsection{Definición}
+
+Fine Tuning es el proceso de ajustar un modelo preentrenado usando datos específicos para especializarlo en una tarea o dominio.
+
+\subsection{Cuándo usarlo}
+
+\begin{itemize}
+    \item Cuando se necesita que el modelo responda con un estilo muy específico.
+    \item Cuando existen muchos ejemplos históricos bien etiquetados.
+    \item Cuando el prompt no es suficiente para mantener consistencia.
+\end{itemize}
+
+\subsection{Cuándo no usarlo}
+
+\begin{itemize}
+    \item Cuando el problema puede resolverse con buen Prompt Engineering.
+    \item Cuando hay pocos datos.
+    \item Cuando la información cambia constantemente.
+    \item Cuando conviene usar RAG o consulta a documentos.
+\end{itemize}
+
+\subsection{Respuesta de entrevista}
+
+\begin{quote}
+Primero intentaría resolver el caso con Prompt Engineering, automatización o recuperación de información. Consideraría Fine Tuning sólo si la empresa cuenta con suficientes datos históricos de calidad y si necesita un comportamiento muy especializado del modelo.
+\end{quote}
+
+% ==========================================================
+\section{ISO 27001}
+% ==========================================================
+
+\subsection{Definición}
+
+ISO 27001 es un estándar internacional para la gestión de la seguridad de la información.
+
+\subsection{Pilares principales}
+
+\begin{itemize}
+    \item \textbf{Confidencialidad:} sólo acceden las personas autorizadas.
+    \item \textbf{Integridad:} la información no debe modificarse indebidamente.
+    \item \textbf{Disponibilidad:} la información debe estar accesible cuando se necesita.
+\end{itemize}
+
+\subsection{IA e ISO 27001}
+
+Al implementar IA en una empresa se debe cuidar:
+
+\begin{itemize}
+    \item No exponer información sensible.
+    \item Controlar accesos.
+    \item Registrar actividad.
+    \item Evitar fuga de datos.
+    \item Definir qué información puede enviarse a modelos externos.
+    \item Coordinar con Seguridad TI.
+\end{itemize}
+
+\subsection{Respuesta de entrevista}
+
+\begin{quote}
+Al implementar IA en una empresa de seguridad o traslado de valores, lo primero sería cuidar la confidencialidad de la información. No enviaría datos sensibles a herramientas externas sin autorización. También definiría permisos, trazabilidad, registros de actividad y controles alineados con las políticas de Seguridad TI e ISO 27001.
+\end{quote}
+
+% ==========================================================
+\section{Casos prácticos posibles}
+% ==========================================================
+
+\subsection{Caso 1: Consumir una API pública}
+
+\textbf{Problema:} Consume una API pública y muestra los nombres de usuarios.
+
+\begin{lstlisting}[language=Python]
+import requests
+
+url = "https://jsonplaceholder.typicode.com/users"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    usuarios = response.json()
+
+    for usuario in usuarios:
+        print(usuario["name"])
+else:
+    print("Error:", response.status_code)
+\end{lstlisting}
+
+\subsection{Caso 2: Enviar datos por POST}
+
+\textbf{Problema:} Envía datos a una API.
+
+\begin{lstlisting}[language=Python]
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+nuevo_post = {
+    "title": "Nuevo reporte",
+    "body": "Contenido del reporte",
+    "userId": 1
+}
+
+response = requests.post(url, json=nuevo_post)
+
+print(response.status_code)
+print(response.json())
+\end{lstlisting}
+
+\subsection{Caso 3: Crear una base de datos y una tabla}
+
+\begin{lstlisting}[language=SQL]
+CREATE DATABASE EmpresaIA;
+
+USE EmpresaIA;
+
+CREATE TABLE Incidencia(
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    titulo VARCHAR(100),
+    descripcion VARCHAR(255),
+    prioridad VARCHAR(50),
+    estado VARCHAR(50)
+);
+\end{lstlisting}
+
+\subsection{Caso 4: Insertar incidencias}
+
+\begin{lstlisting}[language=SQL]
+INSERT INTO Incidencia(titulo, descripcion, prioridad, estado)
+VALUES
+('Falla en sistema', 'No permite iniciar sesión', 'Alta', 'Pendiente'),
+('Reporte duplicado', 'Se generó dos veces', 'Media', 'En revisión');
+\end{lstlisting}
+
+\subsection{Caso 5: Consultar incidencias pendientes}
+
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM Incidencia
+WHERE estado = 'Pendiente';
+\end{lstlisting}
+
+\subsection{Caso 6: Actualizar estado}
+
+\begin{lstlisting}[language=SQL]
+UPDATE Incidencia
+SET estado = 'Resuelto'
+WHERE id = 1;
+\end{lstlisting}
+
+\subsection{Caso 7: Conectar Python con SQL y leer datos}
+
+\begin{lstlisting}[language=Python]
+import pyodbc
+
+conexion = pyodbc.connect(
+    "DRIVER={ODBC DRIVER 17 for SQL SERVER};"
+    "SERVER=localhost\\SQL2025;"
+    "DATABASE=EmpresaIA;"
+    "Trusted_connection=yes;"
+)
+
+cursor = conexion.cursor()
+
+cursor.execute("SELECT id, titulo, prioridad FROM Incidencia")
+
+incidencias = cursor.fetchall()
+
+for incidencia in incidencias:
+    print(incidencia.id, incidencia.titulo, incidencia.prioridad)
+
+cursor.close()
+conexion.close()
+\end{lstlisting}
+
+\subsection{Caso 8: Clasificar texto con lógica simple}
+
+\begin{lstlisting}[language=Python]
+texto = "No funciona el sistema de acceso"
+
+if "no funciona" in texto.lower():
+    prioridad = "Alta"
+else:
+    prioridad = "Media"
+
+print("Prioridad:", prioridad)
+\end{lstlisting}
+
+\subsection{Caso 9: Simular clasificación de incidencia con IA}
+
+\begin{lstlisting}[language=Python]
+def clasificar_incidencia(texto):
+    texto = texto.lower()
+
+    if "urgente" in texto or "no funciona" in texto:
+        return "Alta"
+    elif "revisión" in texto or "lento" in texto:
+        return "Media"
+    else:
+        return "Baja"
+
+incidencia = "Urgente: no funciona el sistema de reportes"
+
+prioridad = clasificar_incidencia(incidencia)
+
+print("Prioridad detectada:", prioridad)
+\end{lstlisting}
+
+\subsection{Caso 10: Convertir datos a JSON}
+
+\begin{lstlisting}[language=Python]
+import json
+
+incidencia = {
+    "titulo": "Falla en sistema",
+    "prioridad": "Alta",
+    "estado": "Pendiente"
+}
+
+incidencia_json = json.dumps(incidencia, indent=4)
+
+print(incidencia_json)
+\end{lstlisting}
+
+% ==========================================================
+\section{Casos de IA para Transportes Lock}
+% ==========================================================
+
+\subsection{Caso A: Automatización documental}
+
+\textbf{Respuesta modelo:}
+
+\begin{quote}
+Implementaría un flujo de automatización documental con N8N o Power Automate. El sistema recibiría correos, reportes o documentos, extraería el contenido, lo enviaría a un modelo de lenguaje para generar un resumen, clasificaría la prioridad y asignaría el caso al área correspondiente. Esto reduciría tiempo administrativo, errores de clasificación y mejoraría la trazabilidad.
+\end{quote}
+
+\subsection{Flujo}
+
+\begin{lstlisting}
+Correo o documento
+    ↓
+Extracción de texto
+    ↓
+Modelo de IA
+    ↓
+Resumen y clasificación
+    ↓
+Registro en base de datos
+    ↓
+Notificación al responsable
+\end{lstlisting}
+
+\subsection{Caso B: Sistema de tickets con IA}
+
+\begin{quote}
+Implementaría un sistema centralizado de tickets e incidencias asistido por IA. Los usuarios podrían registrar incidencias mediante formulario, correo o imagen. El modelo clasificaría la incidencia, asignaría prioridad, sugeriría área responsable y generaría resúmenes ejecutivos para supervisores.
+\end{quote}
+
+\subsection{Caso C: Rutas y operación}
+
+\begin{quote}
+Además de integrar servicios de geolocalización como Google Maps, exploraría modelos de optimización que consideren tráfico, clima, restricciones operativas e incidencias de seguridad. El objetivo no sería sólo encontrar la ruta más corta, sino la más eficiente y segura.
+\end{quote}
+
+\subsection{Caso D: Tres meses y presupuesto limitado}
+
+\begin{quote}
+Empezaría con un proyecto de automatización documental e incidencias internas porque tiene bajo costo, impacto rápido y riesgo controlado. Mediría el éxito con indicadores como horas administrativas ahorradas, reducción del tiempo de respuesta, disminución de errores de clasificación y número de incidencias procesadas automáticamente.
+\end{quote}
+
+\subsection{Valor económico ejemplo}
+
+\begin{quote}
+Si cinco personas dedican una hora diaria a clasificar correos y reportes, eso equivale aproximadamente a 100 horas mensuales. Si una automatización reduce ese tiempo en 70\%, se ahorrarían cerca de 70 horas al mes. Con un costo aproximado de 150 pesos por hora, el ahorro sería de 10,500 pesos mensuales, o más de 120,000 pesos al año.
+\end{quote}
+
+% ==========================================================
+\section{Preguntas técnicas rápidas}
+% ==========================================================
+
+\subsection{¿Qué es una API?}
+
+Una API es una interfaz que permite que dos aplicaciones se comuniquen e intercambien información de manera estructurada.
+
+\subsection{¿Qué es un endpoint?}
+
+Es una dirección específica dentro de una API que permite acceder a un recurso.
+
+\subsection{¿Qué es un request?}
+
+Es la petición que envía el cliente al servidor.
+
+\subsection{¿Qué es un response?}
+
+Es la respuesta que devuelve el servidor.
+
+\subsection{¿Qué es JSON?}
+
+JSON es un formato ligero de intercambio de datos basado en pares clave--valor.
+
+\subsection{¿Qué es una API Key?}
+
+Es una credencial que permite autenticar y autorizar el acceso a una API.
+
+\subsection{¿Qué diferencia hay entre GET y POST?}
+
+GET se usa para obtener información. POST se usa para enviar información y crear un recurso.
+
+\subsection{¿Qué es SQL?}
+
+SQL es un lenguaje utilizado para crear, consultar, actualizar y eliminar información en bases de datos relacionales.
+
+\subsection{¿Qué es NoSQL?}
+
+NoSQL es un tipo de base de datos flexible que no depende principalmente de tablas relacionales. MongoDB, por ejemplo, usa documentos similares a JSON.
+
+\subsection{¿Qué es Docker?}
+
+Docker permite empaquetar una aplicación con sus dependencias para ejecutarla de forma consistente en distintos entornos.
+
+\subsection{¿Qué es un LLM?}
+
+Un LLM es un modelo de lenguaje entrenado con grandes volúmenes de texto, capaz de generar respuestas, resumir información, analizar documentos y apoyar tareas de automatización.
+
+\subsection{¿Qué es Prompt Engineering?}
+
+Es el diseño estructurado de instrucciones para obtener respuestas más precisas y útiles de un modelo de IA.
+
+\subsection{¿Qué es Fine Tuning?}
+
+Es el proceso de ajustar un modelo preentrenado con datos específicos para especializarlo en una tarea concreta.
+
+\subsection{¿Qué es ISO 27001?}
+
+Es un estándar internacional para la gestión de la seguridad de la información.
+
+% ==========================================================
+\section{Cómo hablar de experiencia propia}
+% ==========================================================
+
+\subsection{Uso profesional de IA}
+
+\begin{quote}
+Utilizo IA principalmente como acelerador de trabajo. Cuando trabajo sobre tecnologías que ya conozco, la uso para generar propuestas de implementación, documentación, código repetitivo o análisis de errores. Cuando la uso para tecnologías nuevas, valido los resultados con pruebas propias y documentación técnica.
+\end{quote}
+
+\subsection{Proyecto Gravyx}
+
+\begin{quote}
+Uno de los proyectos más interesantes fue apoyar en el análisis de una plataforma llamada Gravyx. El principal reto era que la aplicación había sido desarrollada con herramientas de IA generativa y tenía poca documentación técnica. Para identificar errores fue necesario revisar componentes, entidades, flujos y dependencias prácticamente archivo por archivo. La IA ayudó a acelerar el análisis, pero cada hipótesis debía validarse manualmente antes de proponer cambios.
+\end{quote}
+
+\subsection{Borigen Studios}
+
+\begin{quote}
+Borigen Studios trabaja por proyecto para distintas empresas. Mi participación se ha enfocado en desarrollo de software, integración de APIs, automatización y procesamiento de datos. He trabajado con backend, SQL, Python, análisis de datos y apoyo en debugging de aplicaciones.
+\end{quote}
+
+% ==========================================================
+\section{Checklist final}
+% ==========================================================
+
+\begin{longtable}{|p{1.5cm}|p{10cm}|}
+\hline
+\textbf{Estado} & \textbf{Actividad} \\
+\hline
+$\square$ & Explicar qué es una API. \\
+\hline
+$\square$ & Hacer un GET en Python. \\
+\hline
+$\square$ & Hacer un POST en Python. \\
+\hline
+$\square$ & Leer JSON en Python. \\
+\hline
+$\square$ & Crear una base de datos en SQL Server. \\
+\hline
+$\square$ & Crear una tabla. \\
+\hline
+$\square$ & Hacer INSERT, SELECT, UPDATE y DELETE. \\
+\hline
+$\square$ & Conectar Python con SQL Server usando pyodbc. \\
+\hline
+$\square$ & Explicar Docker básico. \\
+\hline
+$\square$ & Explicar SQL vs NoSQL. \\
+\hline
+$\square$ & Explicar ISO 27001. \\
+\hline
+$\square$ & Diseñar una automatización con IA. \\
+\hline
+$\square$ & Explicar un proyecto propio usando IA. \\
+\hline
+$\square$ & Proponer una solución de IA para Transportes Lock. \\
+\hline
+\end{longtable}
+
+\section{Comentarios Finales}
+
+\begin{quote}
+Mi perfil combina formación científica, experiencia en desarrollo de software y uso práctico de inteligencia artificial. No me considero únicamente usuario de herramientas de IA, sino alguien que puede analizar procesos, identificar oportunidades de automatización, proponer soluciones técnicas y validar que generen valor real para la empresa.
+\end{quote}
+
+\end{document}
